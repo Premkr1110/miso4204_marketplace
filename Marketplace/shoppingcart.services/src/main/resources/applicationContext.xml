@@ -10,4 +10,32 @@
 
     <bean id="shoppingcartLogicService" class="co.edu.uniandes.csw.miso4204.shoppingcart.logic.ejb.ShoppingCartLogicService" />
     <bean id="shoppingcartMasterLogicService" class="co.edu.uniandes.csw.miso4204.shoppingcart.master.logic.ejb.ShoppingCartMasterLogicService" />
+	
+	<bean id="securityLogic" class="co.edu.uniandes.csw.miso4204.security.logic.SecurityLogic" />     
+    <bean id="securityRealm" class="co.edu.uniandes.csw.miso4204.security.SecurityRealm">
+         <property name="securityLogic" ref="securityLogic"/>
+    </bean>
+    <bean id="securityAuthenticator" class="co.edu.uniandes.csw.miso4204.security.SecurityAuthenticator">
+         <property name="securityLogic" ref="securityLogic"/>
+    </bean>
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+         <property name="realm" ref="securityRealm"/>
+         <property name="authenticator" ref="securityAuthenticator" />
+    </bean>
+    <bean id="securityFilter" class="co.edu.uniandes.csw.miso4204.security.SecurityFilter"/>
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+         <property name="securityManager" ref="securityManager"/>
+         <property name="filters">
+             <map>
+                 <entry key="securityFilter" value-ref="securityFilter"/>
+             </map>
+         </property>
+         <property name="filterChainDefinitions">
+             <value>
+                 /webresources/Auth/** = anon
+                 /webresources/shopping_carts/** = securityFilter
+				 /webresources/master/shopping_carts/** = securityFilter
+             </value>
+         </property>
+    </bean>    
 </beans>

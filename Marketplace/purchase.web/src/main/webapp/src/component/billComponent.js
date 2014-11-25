@@ -81,7 +81,7 @@ define(['component/productComponent', 'component/toolbarComponent', 'component/_
             this.productComponent.listComponent.addColumn('totalValue', 'Total Value');
             this.productComponent.listComponent.removeColumn('categoryId');
             
-            var v_productList = []; //this.purchaseIntegrator.productsShoppingCart.records;
+            var v_productList = this.purchaseIntegrator.productsShoppingCart.records;
             
             var products = [];
             var v_totalCarrito = 0;

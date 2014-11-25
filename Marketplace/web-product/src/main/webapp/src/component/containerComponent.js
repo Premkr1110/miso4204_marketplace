@@ -10,6 +10,7 @@ define(['component/_CRUDComponent'], function (CRUDCp) {
 	App.Component.ContainerComponent = App.Component.BasicComponent.extend({
 		initialize: function (options) {
 			var self = this;
+			var cookies;
 			Backbone.on('iframe-load', function () {
 				cookies = self.parseCookies();
 				if (cookies['token']) {
@@ -28,7 +29,7 @@ define(['component/_CRUDComponent'], function (CRUDCp) {
 			}
 			var cookiesArray = document.cookie.split(';');
 			for (var iCookie in cookiesArray) {
-				var name = cookiesArray[iCookie].split(/=(.*)/)[0];
+				var name = cookiesArray[iCookie].split(/=(.*)/)[0].trim();
 				cookies[name] = {};
 				var attributes = cookiesArray[iCookie].split(/=(.*)/)[1].split(':');
 				if (attributes) {

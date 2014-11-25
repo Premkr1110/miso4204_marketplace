@@ -33,7 +33,7 @@
          <property name="filterChainDefinitions">
              <value>
                  /webresources/Auth/** = anon
-                 /webresources/score/** = securityFilter
+                 /webresources/scores/** = securityFilter
              </value>
          </property>
     </bean>    

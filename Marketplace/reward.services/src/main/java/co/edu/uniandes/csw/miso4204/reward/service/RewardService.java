@@ -56,11 +56,12 @@ public class RewardService extends _RewardService {
 
     //private static String URL_SERVICIO = System.getenv("URL1");
     @Context
-    private static UriInfo uriInfo;
-    private static URI uri = uriInfo.getBaseUri();
+    private UriInfo uriInfo;
+	
+    //private URI uri = uriInfo.getBaseUri();
     
     //private static String URL_SERVICIO =  "http://localhost:8084/purchase.services/webresources/purchases/last";
-    private static String URL_SERVICIO =  "http://"+uri.getHost()+":"+uri.getPort()+"/purchase.services/webresources/purchases/last";
+    //private String URL_SERVICIO =  "http://"+uri.getHost()+":"+uri.getPort()+"/purchase.services/webresources/purchases/last";
 
     @GET
     @Path("/total")
@@ -82,6 +83,9 @@ public class RewardService extends _RewardService {
         ClientConfig config = new ClientConfig();
         Client client = ClientBuilder.newClient(config);
         
+		URI uri = uriInfo.getBaseUri();
+		String URL_SERVICIO =  "http://"+uri.getHost()+":"+uri.getPort()+"/purchase.services/webresources/purchases/last";
+		
         String entity = client.target(URL_SERVICIO)
                 .path(reward.getBuyerId().toString())
                 .request(MediaType.APPLICATION_JSON)
