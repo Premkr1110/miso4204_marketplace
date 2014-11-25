@@ -70,10 +70,10 @@ public class RewardPersistence extends _RewardPersistence{
 		try {
 			Query query = entityManager.createQuery("SELECT u.totalPoints FROM RewardEntity u WHERE u.buyerId = "+reward.getBuyerId()+" ORDER BY u.date DESC").setMaxResults(1);
 			accumulatedPoints = Integer.parseInt(query.getSingleResult().toString());
-			reward.setTotalPoints(accumulatedPoints+reward.getPoints());
 		} catch(NoResultException e) {
 			accumulatedPoints = 0;
     }
+		reward.setTotalPoints(accumulatedPoints+reward.getPoints());
 		RewardEntity entity=RewardConverter.persistenceDTO2Entity(reward);
                 
             try {
