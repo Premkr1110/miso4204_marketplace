@@ -32,7 +32,10 @@ define(['controller/selectionController', 'model/cacheModel', 'component/_CRUDCo
         productScore : function(){
             var items = this.productComponent.getSelectedRecords();
             document.location.href = "listScore.html";
-        }
+        },
+		getProductComponent: function(){
+			return this.productComponent;
+		}
     });
 
     return App.Component.CompositeComponent;

@@ -11,8 +11,10 @@ define(['component/addressComponent', 'component/creditCardComponent', 'componen
 
             this.setupAdressComponent();
             
+			var token = getCookie("token");
             $.ajax({
                 url: '/shoppingcartitem.services/webresources/shopping_cart_items/',
+				headers: { 'X_REST_USER': token },
                 type: 'GET',
                 //data: JSON.stringify(purchaseMaster),
                 contentType: 'application/json'
@@ -20,6 +22,7 @@ define(['component/addressComponent', 'component/creditCardComponent', 'componen
                 console.log("_bind"); //callback(data);
                 //alert('COMPRA GUARDADA!!' +  data );    // Continuar con ciclo de compra
                 this.productsShoppingCart = data;
+				this.billComponent.render();
             }, this)).error(_.bind(function(data) {
                 console.log("callback error"); //callback(data);
                 //alert('ERROR REALIZANDO LA COMPRA - INTENTE MAS TARDE'); // Continuar con ciclo de compra
@@ -190,8 +193,10 @@ define(['component/addressComponent', 'component/creditCardComponent', 'componen
                 }]
             };
              
+			 var token = getCookie("token");
             $.ajax({
                 url: '/purchase.services/webresources/master/purchases/',
+				headers: { 'X_REST_USER': token },
                 type: 'POST',
                 data: JSON.stringify(purchaseMaster),
                 contentType: 'application/json'
@@ -219,7 +224,19 @@ define(['component/addressComponent', 'component/creditCardComponent', 'componen
                     show: true
                 }, value.callback, value.that);
             });
-        }
+        },
     });
+	function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ')
+                c = c.substring(1);
+            if (c.indexOf(name) != -1)
+                return c.substring(name.length, c.length);
+        }
+        return "";
+    }
     return App.Component.PurchaseIntegrator;
 });

@@ -1,4 +1,4 @@
-define(['component/shoppingCartMasterComponent', 'component/productComponent'], function (ShoppingCartMasterComponent, cartCp) {
+define(['component/shoppingCartMasterComponent', 'component/productScoreComponent'], function (ShoppingCartMasterComponent, cartCp) {
     App.Component.CompositeComponentShopping = App.Component.BasicComponent.extend({
         initialize: function () {
             this.componentId = App.Utils.randomInteger();
@@ -12,7 +12,7 @@ define(['component/shoppingCartMasterComponent', 'component/productComponent'], 
                 rootElement.append("<div id='cart' class='col-md-4'></div>");
                 $("#cart").append("<div id='master'></div>");
                 $("#cart").append("<div id='items'></div>");
-                this.productComponent.render("main1");
+                this.productComponent.getProductComponent().render("main1");
                 this.cartMasterComponent.renderMaster('master');
                 this.cartMasterComponent.masterComponent.create();
                 this.cartMasterComponent.masterComponent.listComponent.display(false);
@@ -27,14 +27,14 @@ define(['component/shoppingCartMasterComponent', 'component/productComponent'], 
 
             }
 
-            this.productComponent.renderRecords();
+            this.productComponent.getProductComponent().renderRecords();
             this.cartMasterComponent.renderChild('item');
         }, setupProductComponent: function () {
             this.productComponent = new cartCp();
             this.productComponent.initialize();
-            this.productComponent.enableMultipleSelection(true);
-            this.productComponent.setReadOnly(true);
-            this.productComponent.addRecordAction({
+            this.productComponent.getProductComponent().enableMultipleSelection(true);
+            this.productComponent.getProductComponent().setReadOnly(true);
+            this.productComponent.getProductComponent().addRecordAction({
                 name: 'addToCart',
                 icon: '',
                 displayName: 'Add to cart',
@@ -42,7 +42,7 @@ define(['component/shoppingCartMasterComponent', 'component/productComponent'], 
             },
             this.addItem,
                     this);
-            this.productComponent.addGlobalAction({
+            this.productComponent.getProductComponent().addGlobalAction({
                 name: 'buy',
                 icon: 'glyphicon-shopping-cart',
                 displayName: 'Add to cart',
@@ -67,7 +67,7 @@ define(['component/shoppingCartMasterComponent', 'component/productComponent'], 
             this.cartMasterComponent.shoppingCartItemComponent.disableEdit();
             this.cartMasterComponent.hideChilds();
         }, addToCart: function () {
-            var items = this.productComponent.getSelectedRecords();
+            var items = this.productComponent.getProductComponent().getSelectedRecords();
             var idList = [];
             for (var property in items) {
                 if (items.hasOwnProperty(property)) {
@@ -75,16 +75,16 @@ define(['component/shoppingCartMasterComponent', 'component/productComponent'], 
                 }
             }
             this.cartMasterComponent.addItems(idList);
-            this.productComponent.clearSelectedRecords();
+            this.productComponent.getProductComponent().clearSelectedRecords();
             this.render();
             this.cartMasterComponent.shoppingCartItemComponent.listComponent.render();
         }, addItem: function (params) {
             this.cartMasterComponent.addItems([{productId: params.id}]);
-            this.productComponent.clearSelectedRecords();
+            this.productComponent.getProductComponent().clearSelectedRecords();
             this.render();
             this.cartMasterComponent.shoppingCartItemComponent.listComponent.render();
         }, buy: function () {
-           document.location.href="http://localhost:8084/purchase.web";
+           document.location.href=window.location.origin+"/purchase.web";
         }
     });
     return App.Component.CompositeComponentShopping;
