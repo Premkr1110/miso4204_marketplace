@@ -55,12 +55,12 @@ import javax.ws.rs.core.UriInfo;
 public class RewardService extends _RewardService {
 
     //private static String URL_SERVICIO = System.getenv("URL1");
-    @Context
-    private static UriInfo uriInfo;
-    private static URI uri = uriInfo.getBaseUri();
+    //@Context
+    //private static UriInfo uriInfo;
+    //private static URI uri = uriInfo.getBaseUri();
     
-    //private static String URL_SERVICIO =  "http://localhost:8084/purchase.services/webresources/purchases/last";
-    private static String URL_SERVICIO =  "http://"+uri.getHost()+":"+uri.getPort()+"/purchase.services/webresources/purchases/last";
+    private static String URL_SERVICIO =  "http://localhost:8084/purchase.services/webresources/purchases/last";
+    //private static String URL_SERVICIO =  "http://"+uri.getHost()+":"+uri.getPort()+"/purchase.services/webresources/purchases/last";
 
     @GET
     @Path("/total")
@@ -71,13 +71,13 @@ public class RewardService extends _RewardService {
     @POST
     @Path("/save")
     public RewardDTO saveReward(@Context HttpHeaders httpHeaders, RewardDTO reward) {
-        try
+        /*try
         {
         String path = new File(".").getCanonicalPath();
         }
         catch(Exception e)
                 {
-        }
+        }*/
         String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
         ClientConfig config = new ClientConfig();
         Client client = ClientBuilder.newClient(config);
