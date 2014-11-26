@@ -12,6 +12,7 @@ function (wishListMasterCp, shoppingCartCp)
                 $.ajax({
                     async: false,
                     url: '/wishlistitem.services/webresources/wish_list_items/validate/' + user,
+					headers: { 'X_REST_USER': user },
                     type: 'GET',
                     data: user,
                     contentType: 'application/json'
