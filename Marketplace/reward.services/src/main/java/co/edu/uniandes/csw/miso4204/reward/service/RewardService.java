@@ -72,13 +72,13 @@ public class RewardService extends _RewardService {
     @POST
     @Path("/save")
     public RewardDTO saveReward(@Context HttpHeaders httpHeaders, RewardDTO reward) {
-        try
+        /*try
         {
         String path = new File(".").getCanonicalPath();
         }
         catch(Exception e)
                 {
-        }
+        }*/
         String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
         ClientConfig config = new ClientConfig();
         Client client = ClientBuilder.newClient(config);
