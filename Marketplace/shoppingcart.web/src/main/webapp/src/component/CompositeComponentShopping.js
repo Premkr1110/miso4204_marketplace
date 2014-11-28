@@ -84,7 +84,9 @@ define(['component/shoppingCartMasterComponent', 'component/productScoreComponen
             this.render();
             this.cartMasterComponent.shoppingCartItemComponent.listComponent.render();
         }, buy: function () {
-           document.location.href=window.location.origin+"/purchase.web";
+			this.cartMasterComponent.masterComponent.save();
+			this.cartMasterComponent.saveLuck();
+			window.location.href = '/purchase.web';
         }
     });
     return App.Component.CompositeComponentShopping;

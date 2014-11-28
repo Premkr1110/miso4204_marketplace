@@ -31,13 +31,6 @@ define(['model/_shoppingCartModel'], function() {
     App.Model.ShoppingCartModel = App.Model._ShoppingCartModel.extend({
 
  		validate: function(attrs,options){
-            var validationMessage = "";
-            if(!attrs.name){
-                validationMessage = "The name can't be empty.";
-            }
-            if(validationMessage.length>0){
-               return validationMessage;
-            }
         }
 
     });
