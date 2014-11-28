@@ -34,14 +34,14 @@ define(['component/shoppingCartMasterComponent', 'component/productScoreComponen
             this.productComponent.initialize();
             this.productComponent.getProductComponent().enableMultipleSelection(true);
             this.productComponent.getProductComponent().setReadOnly(true);
-            this.productComponent.getProductComponent().addRecordAction({
+            /*this.productComponent.getProductComponent().addRecordAction({
                 name: 'addToCart',
                 icon: '',
                 displayName: 'Add to cart',
                 show: true
             },
             this.addItem,
-                    this);
+                    this);*/
             this.productComponent.getProductComponent().addGlobalAction({
                 name: 'buy',
                 icon: 'glyphicon-shopping-cart',
@@ -71,7 +71,7 @@ define(['component/shoppingCartMasterComponent', 'component/productScoreComponen
             var idList = [];
             for (var property in items) {
                 if (items.hasOwnProperty(property)) {
-                    idList.push({productId: items[property].id});
+                    idList.push(items[property].toJSON());
                 }
             }
             this.cartMasterComponent.addItems(idList);
@@ -85,7 +85,6 @@ define(['component/shoppingCartMasterComponent', 'component/productScoreComponen
             this.cartMasterComponent.shoppingCartItemComponent.listComponent.render();
         }, buy: function () {
 			this.cartMasterComponent.masterComponent.save();
-			this.cartMasterComponent.saveLuck();
 			window.location.href = '/purchase.web';
         }
     });

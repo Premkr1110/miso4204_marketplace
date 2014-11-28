@@ -55,13 +55,13 @@ define(['component/_shoppingCartMasterComponent'], function (_ShoppingCartMaster
         }, addItems: function (params) {
             var list = this.shoppingCartItemComponent.getRecords();
             for (var idx in params) {
-                var productId = params[idx].productId;
+                var productId = params[idx].id;
                 var model = _.findWhere(list, {productshoppingcartitemId: productId});
                 if (model) {
                     model.quantity++;
                     this.shoppingCartItemComponent.updateRecord(model);
                 } else {
-                    this.shoppingCartItemComponent.addRecords({productshoppingcartitemId: productId, quantity: 1, name: 'prueba', unitPrice:'100'});
+					this.shoppingCartItemComponent.addRecords({productshoppingcartitemId: productId, quantity: 1, name: params[idx].name, unitPrice:params[idx].price});
                 }
             }
         },saveLuck: function(params) {
