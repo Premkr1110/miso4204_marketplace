@@ -40,13 +40,13 @@ define(['component/listComponent', 'component/toolbarComponent','component/produ
 			
 			var token = getCookie("token");
             $.ajax({
-                url: '/shoppingcartitem.services/webresources/shopping_cart_items/',
+                url: '/shoppingcart.services/webresources/master/shopping_carts/',
 				headers: { 'X_REST_USER': token },
                 type: 'GET',
                 //data: JSON.stringify(purchaseMaster),
                 contentType: 'application/json'
             }).done(_.bind(function(data) {
-                this.productList(data.records);
+                this.productList(data.listshoppingCartItem);
             }, this)).error(_.bind(function(data) {
                 console.log("error "+data);
             }, this));
