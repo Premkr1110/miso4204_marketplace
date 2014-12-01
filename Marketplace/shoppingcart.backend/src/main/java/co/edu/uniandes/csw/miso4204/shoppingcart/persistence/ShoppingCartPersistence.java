@@ -39,6 +39,8 @@ import java.util.Map;
 import java.util.HashMap;
 import co.edu.uniandes.csw.miso4204.shoppingcart.logic.dto.ShoppingCartDTO;
 import co.edu.uniandes.csw.miso4204.shoppingcart.logic.dto.ShoppingCartPageDTO;
+import co.edu.uniandes.csw.miso4204.shoppingcart.persistence.converter.ShoppingCartConverter;
+import javax.persistence.Query;
 import org.apache.shiro.SecurityUtils;
 
 
@@ -52,8 +54,8 @@ public class ShoppingCartPersistence extends _ShoppingCartPersistence{
     }
      
     public void getEntityManager() {
-        co.edu.uniandes.csw.miso4204.security.logic.dto.UserDTO addressS = (co.edu.uniandes.csw.miso4204.security.logic.dto.UserDTO) SecurityUtils.getSubject().getPrincipal();
-        String tenant = addressS.getTenantID();
+        UserDTO userSession = (UserDTO) SecurityUtils.getSubject().getPrincipal();
+        String tenant = userSession.getTenantID();
         Map<String, Object> emProperties = new HashMap<String, Object>();
         emProperties.put("eclipselink.tenant-id", tenant);//Asigna un valor al multitenant
         entityManager = emf.createEntityManager(emProperties);
@@ -65,9 +67,10 @@ public class ShoppingCartPersistence extends _ShoppingCartPersistence{
         
         try{
             getEntityManager();
-            shoppingcart2 = super.createShoppingCart(shoppingCart);
-            UserDTO user = (UserDTO) SecurityUtils.getSubject().getPrincipal();
+			UserDTO user = (UserDTO) SecurityUtils.getSubject().getPrincipal();
 			shoppingCart.setBuyerId(user.getId());
+			shoppingCart.setName(user.getUsername()+"'s cart");
+            shoppingcart2 = super.createShoppingCart(shoppingCart);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -170,5 +173,31 @@ public class ShoppingCartPersistence extends _ShoppingCartPersistence{
             }
         }
     }
-
+	public ShoppingCartDTO getShoppingCartByCurrentUser(){
+		ShoppingCartDTO shoppingcart;
+        try{
+            getEntityManager();
+			UserDTO userSession = (UserDTO) SecurityUtils.getSubject().getPrincipal();
+            entityManager.getTransaction().begin();
+			Query q = entityManager.createQuery("select u from ShoppingCartEntity u where u.buyerId = :buyerId");
+			q.setParameter("buyerId", userSession.getId());
+			List<ShoppingCartDTO> list = ShoppingCartConverter.entity2PersistenceDTOList(q.getResultList());
+			if (list.isEmpty()) {
+				shoppingcart=null;
+			}else{
+				shoppingcart = list.get(0);
+			}
+			entityManager.getTransaction().commit();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            shoppingcart = null;
+        }
+        finally{
+            if (entityManager.isOpen()) {
+                entityManager.close();
+            }
+        }
+        return shoppingcart;
+	}
 }

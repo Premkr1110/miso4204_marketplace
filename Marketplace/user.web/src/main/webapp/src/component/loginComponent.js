@@ -35,14 +35,11 @@ $(document).ready(function () {
             contentType: "application/json"
         }).done(_.bind(function (data) {
             console.log(data);
-            alert('USUARIO AUTENTICADO');
             setCookie("token", data, 1);
-            window.location.href = '../address.web';
+            window.location.href = '/wishlist.web/wishListIntegratorCart.html';
         }, this)).error(_.bind(function (data) {
             console.log("data");
-            alert('USUARIO NO AUTENTICADO : ' + data["responseText"]);
-
-
+            alert('Usuario no autenticado : ' + data["responseText"]);
         }, this));
     });
 

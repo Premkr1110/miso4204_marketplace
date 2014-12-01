@@ -54,6 +54,7 @@ define(['component/shoppingCartMasterComponent', 'component/productScoreComponen
         }, setupCartMasterComponent: function () {
             this.cartMasterComponent = new ShoppingCartMasterComponent();
             this.cartMasterComponent.initialize();
+			this.cartMasterComponent.shoppingCartItemComponent.listComponent.removeColumn("productshoppingcartitemId");
             this.cartMasterComponent.masterComponent.clearGlobalActions();
             this.cartMasterComponent.masterComponent.addGlobalAction({
                 name: 'checkout',
@@ -84,8 +85,10 @@ define(['component/shoppingCartMasterComponent', 'component/productScoreComponen
             this.render();
             this.cartMasterComponent.shoppingCartItemComponent.listComponent.render();
         }, buy: function () {
+			Backbone.on(this.cartMasterComponent.masterComponent.componentId + '-' + 'post-shoppingCart-save', function(){
+				window.location.href = '/purchase.web';
+			});
 			this.cartMasterComponent.masterComponent.save();
-			window.location.href = '/purchase.web';
         }
     });
     return App.Component.CompositeComponentShopping;
