@@ -38,4 +38,8 @@ public class ShoppingCartLogicService extends _ShoppingCartLogicService {
 		persistance = new ShoppingCartPersistence();
 	}
 	
+	public void deleteCurrentShoppingCart(){
+		persistance.deleteCurrentShoppingCart();
+	}
+	
 }

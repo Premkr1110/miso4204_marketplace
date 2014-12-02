@@ -200,4 +200,11 @@ public class ShoppingCartPersistence extends _ShoppingCartPersistence{
         }
         return shoppingcart;
 	}
+	
+	public void deleteCurrentShoppingCart() {
+		ShoppingCartDTO sc = getShoppingCartByCurrentUser();
+		if (sc != null) {
+			deleteShoppingCart(sc.getId());
+		}
+	}
 }

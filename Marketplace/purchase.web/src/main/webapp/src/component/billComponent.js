@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-define(['component/listComponent', 'component/toolbarComponent','component/productComponent'], function(listCp, toolbarCP) {
+define(['component/listComponent', 'component/toolbarComponent','delegate/shoppingCartDelegate','model/productModel'], function(listCp, toolbarCP, scDelegate) {
     App.Component.Bill = App.Component.BasicComponent.extend({
         initialize: function(options) {
             this.componentId = App.Utils.randomInteger();
@@ -38,18 +38,11 @@ define(['component/listComponent', 'component/toolbarComponent','component/produ
             $('#branch').val(this.creditCard.get("branch"));
             $('#payPoints').val(this.creditCard.get("a"));
 			
-			var token = getCookie("token");
-            $.ajax({
-                url: '/shoppingcart.services/webresources/master/shopping_carts/',
-				headers: { 'X_REST_USER': token },
-                type: 'GET',
-                //data: JSON.stringify(purchaseMaster),
-                contentType: 'application/json'
-            }).done(_.bind(function(data) {
-                this.productList(data.listshoppingCartItem);
-            }, this)).error(_.bind(function(data) {
-                console.log("error "+data);
-            }, this));
+			var dl = new scDelegate();
+			
+			dl.getCurrentCart(function(data){
+				this.productList(data && data.listshoppingCartItem || []);
+			},this);
         },
         
         toolbar: function(){
@@ -197,9 +190,10 @@ define(['component/listComponent', 'component/toolbarComponent','component/produ
                 data: JSON.stringify(purchaseMaster),
                 contentType: 'application/json'
             }).done(_.bind(function(data) {
-                console.log("_bind"); //callback(data);
-                alert('COMPRA GUARDADA!!');    // Continuar con ciclo de compra
-                document.location.href="/purchase.web";
+				var dl = new scDelegate();
+				dl.deleteCurrentCart(function(){
+					document.location.href="/purchase.web/main.html";
+				}, this);
             }, this)).error(_.bind(function(data) {
                 console.log("callback error"); //callback(data);
                 alert('ERROR REALIZANDO LA COMPRA - INTENTE MAS TARDE'); // Continuar con ciclo de compra
